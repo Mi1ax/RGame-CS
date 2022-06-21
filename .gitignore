@@ -1,0 +1,12 @@
+# Directories
+.idea/
+.vs/
+
+RGame/bin/
+RGame/obj/
+
+# Files
+*.user
+*.sln
+*.csproj
+*.filters
