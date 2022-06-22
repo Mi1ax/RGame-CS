@@ -21,18 +21,19 @@ public class EditorCamera
     private float m_Pitch;
     private float m_Yaw;
 
-    public EditorCamera()
+    public EditorCamera(float distance = 5.0f, float pitch = 0.0f, float yaw = 0.0f)
     {
         m_Fov = 45.0f;
         m_RotationSpeed = 0.8f;
         m_ZoomSpeed = 5f;
 
+        m_Position = Vector3.Zero;
         m_FocalPoint = Vector3.Zero;
         m_InitialMousePosition = Vector2.Zero;
         
-        m_Distance = 5.0f;
-        m_Pitch = 0.0f;
-        m_Yaw = 0.0f;
+        m_Distance = distance;
+        m_Pitch = pitch;
+        m_Yaw = yaw;
     }
 
     public ref float Fov => ref m_Fov;
@@ -40,6 +41,8 @@ public class EditorCamera
     public ref float ZoomSpeed => ref m_ZoomSpeed;
     public ref float RotationSpeed => ref m_RotationSpeed;
     public ref Vector3 FocalPoint => ref m_FocalPoint;
+    public ref float Pitch => ref m_Pitch;
+    public ref float Yaw => ref m_Yaw;
 
     public void BeginDraw()
     {
