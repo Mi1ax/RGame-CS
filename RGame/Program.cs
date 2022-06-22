@@ -1,11 +1,4 @@
-﻿using System.Numerics;
-
-using ImGuiNET;
-using Raylib_cs;
-
-using RGame.Core;
-
-using static Raylib_cs.Raylib;
+﻿using RGame.Core;
 
 namespace RGame
 {
@@ -13,14 +6,7 @@ namespace RGame
     {
         private static void Main()
         {
-            var window = new Window("RGame", 1920, 1080)
-            {
-                OnUpdate = (float dt) =>
-                {
-
-                }
-            };
-
+            var window = new Application("RGame", 1920, 1080);
             window.Run();
         }
     }

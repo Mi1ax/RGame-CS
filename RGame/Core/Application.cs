@@ -8,27 +8,23 @@ using static Raylib_cs.Rlgl;
 
 namespace RGame.Core
 {
-    public class Window
+    public class Application
     {
         private bool m_Running = true;
 
-        public Action<float>? OnUpdate = null;
-        public Action? OnDraw = null;
-        public Action? OnImGuiDraw = null;
-
         private readonly Vector3 m_CubePosition;
 
-        private readonly RCamera3D m_Camera;
+        private readonly EditorCamera m_EditorCamera;
         private readonly RColor m_Color;
         
-        public Window(string label, int width, int height)
+        public Application(string label, int width, int height)
         {
             SetConfigFlags(ConfigFlags.FLAG_VSYNC_HINT | ConfigFlags.FLAG_MSAA_4X_HINT);
             InitWindow(width, height, label);
             rlImGui.Setup();
-
+            
             m_CubePosition = Vector3.Zero;
-            m_Camera = new RCamera3D();
+            m_EditorCamera = new EditorCamera();
             m_Color = Color.RED;
         }
 
@@ -36,22 +32,20 @@ namespace RGame.Core
         {
             while (!WindowShouldClose() && m_Running)
             {
-                OnUpdate?.Invoke(GetFrameTime());
-                m_Camera.Update(GetFrameTime());
+                m_EditorCamera.Update(GetFrameTime());
 
                 BeginDrawing();
                 {
                     ClearBackground(Color.GRAY);
-
-                    //BeginMode3D(m_Camera.GetCameraHandler());
-                    m_Camera.BeginDraw();
+                    
+                    m_EditorCamera.BeginDraw();
                     {
                         DrawCube(m_CubePosition, 2.0f, 2.0f, 2.0f, (Color)m_Color);
                         DrawCubeWires(m_CubePosition, 2.0f, 2.0f, 2.0f, Color.MAROON);
 
                         DrawGrid(40, 1.0f);
                     }
-                    m_Camera.EndDraw();
+                    m_EditorCamera.EndDraw();
 
                     DrawFPS(10, 10);
 
@@ -62,17 +56,14 @@ namespace RGame.Core
                     }
                     ImGui.End();
 
-                    ImGui.Begin("Camera");
+                    ImGui.Begin("EditorCamera Settings");
                     {
-                        ImGui.DragFloat2("Angle", ref m_Camera.Angle, 0.01f);
-                        ImGui.DragFloat("Target Distance", ref m_Camera.TargetDistance);
-
+                        ImGui.DragFloat("Fov", ref m_EditorCamera.Fov);
+                        ImGui.DragFloat("Distance", ref m_EditorCamera.Distance);
+                        ImGui.DragFloat("Rotation Speed", ref m_EditorCamera.RotationSpeed);
+                        ImGui.DragFloat("Zoom Speed", ref m_EditorCamera.ZoomSpeed);
                         ImGui.Separator();
-
-                        ImGui.DragFloat3("Position", ref m_Camera.Position);
-                        ImGui.DragFloat3("Target", ref m_Camera.Target);
-                        ImGui.DragFloat3("Up", ref m_Camera.Up);
-                        ImGui.DragFloat("Fov", ref m_Camera.Fovy);
+                        ImGui.DragFloat3("Focal Point", ref m_EditorCamera.FocalPoint);
                     }
                     ImGui.End();
                     rlImGui.End();
